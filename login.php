@@ -137,20 +137,23 @@ if (isset($_POST['uname']) && isset($_POST['pword'])) {
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">first-name</th>
-                    <th scope="col">last_name</th>
-                    <th scope="col">email</th>
-                    <th scope="col">phone</th>
-                    <th scope="col">address</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Orginiazation</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Status 2</th>
+                    <th scope="col">Start Time</th>
+                    <th scope="col">End Time</th>
 
                 </tr>
             </thead>
             <tbody>
                 <?php
+
                 $servername = "localhost";
                 $username = "root";
                 $password = "";
-                $database = "test-closing-db";
+                $database = "test_closure_import";
 
                 //Create Connection
                 $conn = new mysqli($servername, $username, $password, $database);
@@ -160,19 +163,21 @@ if (isset($_POST['uname']) && isset($_POST['pword'])) {
                     die("Connection Failed: " . $conn->connect_error);
                 }
                 //read all rows from database table
-                $sql = "SELECT * FROM employees";
+                $sql = "SELECT * FROM `c_close_csv` WHERE ORG_ID = '7986'";
                 $result = $conn->query($sql);
 
                 //read data of each row
                 while ($row = $result->fetch_assoc()) {
                     echo "
                     
-                    <td>" . $row["id"] . "</td>
-                    <td>" . $row["first_name"] . "</td>
-                    <td>" . $row["last_name"] . "</td>
-                    <td>" . $row['email'] . "</td>
-                    <td>" . $row['phone'] . "</td>
-                    <td>" . $row['address'] . "</td>
+                    <td>" . $row["ORG_ID"] . "</td>
+                    <td>" . $row["PASSWORD"] . "</td>
+                    <td>" . $row["CATEGORY"] . "</td>
+                    <td>" . $row['ORG'] . "</td>
+                    <td>" . $row['STATUS'] . "</td>
+                    <td>" . $row['STATUS 2'] . "</td>
+                    <td>" . $row['START_TIME'] . "</td>
+                    <td>" . $row['END_TIME'] . "</td>
                 </tr>";
                 }
 
@@ -184,11 +189,26 @@ if (isset($_POST['uname']) && isset($_POST['pword'])) {
             </tbody>
         </table>
 
+
+        <?php
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "status";
+        $connection = mysqli_connect($servername, $username, $password, $database);
+        $query = "SELECT * FROM `status_csv` ";
+        $result = mysqli_query($connection, $query);
+
+
+        ?>
         <!-- Select Basic -->
         <div class="form-group">
             <label class="col-md-3 control-label" for="selectbasic"><strong>Change Status To: </strong></label>
             <div class="col-md-9">
                 <select id="selectbasic" name="selectbasic" class="input">
+                    <?php while ($row1 = mysqli_fetch_array($result)) :; ?>
+                    <option><?php echo $row1[1]; ?></option>
+                    <?php endwhile ?>
                     <option value="1">Option one</option>
                     <option value="2">Option two</option>
                     <option value="3">Option three</option>
@@ -237,7 +257,8 @@ if (isset($_POST['uname']) && isset($_POST['pword'])) {
 
         <div class="row text-center justify-content-center">
             <div class="col-md-3 text-center">
-                <button type="submit" class="btn btn-primary btn-block mb-4 btn-shadow">Submit</button>
+                <button name="save_select" type="submit" class="btn btn-primary btn-block mb-4 btn-shadow">Update
+                    Status</button>
             </div>
         </div>
 </body>
