@@ -1,35 +1,69 @@
 <?php
-include "db_conn.php";
-if (isset($_POST['uname']) && isset($_POST['pword'])) {
-    function validate($data)
-    {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-    }
-    $uname = validate($_POST['uname']);
-    $pword = validate($_POST['pword']);
+// session_start();
+// include "db_conn.php";
+// if (isset($_POST['ORG_ID']) && isset($_POST['PWORD'])) {
+//     function validate($data)
+//     {
+//         $data = trim($data);
+//         $data = stripslashes($data);
+//         $data = htmlspecialchars($data);
+//         return $data;
+//     }
+//     $uname = validate($_POST['ORG_ID']);
+//     $pword = validate($_POST['PWORD']);
 
-    if (empty($uname)) {
-        header("Location: index.php?error=user name is required");
-        exit();
-    } elseif (empty($pword)) {
-        header("Location: index.php?error=password is required");
-        exit();
-    } else {
-        $sql = "SELECT * FROM users WHERE user_name='$uname' AND password='$pword'";
-        $result = mysqli_query($conn, $sql);
+//     if (empty($uname)) {
+//         header("Location: index.php?error=user name is required");
+//         exit();
+//     } elseif (empty($pword)) {
+//         header("Location: index.php?error=password is required");
+//         exit();
+//     } else {
+//         $sql = "SELECT * FROM c_close_csv WHERE ORG_ID='$uname' AND PWORD='$pword'";
+//         $result = mysqli_query($conn, $sql);
 
-        if (mysqli_num_rows($result)) {
-        }
-    }
-} else {
-    header("Location: index.php");
-    exit();
-}
+//         if (mysqli_num_rows($result)) {
+//         }
+//     }
+// } else {
+//     header("Location: index.php");
+//     exit();
+// }
 ?>
 
+<!--THIS IS THE CURRENTLY WORKING VERSIONn-->
+<!-- <?php
+        include "db_conn.php";
+        if (isset($_POST['uname']) && isset($_POST['pword'])) {
+            function validate($data)
+            {
+                $data = trim($data);
+                $data = stripslashes($data);
+                $data = htmlspecialchars($data);
+                return $data;
+            }
+            $uname = validate($_POST['uname']);
+            $pword = validate($_POST['pword']);
+
+            if (empty($uname)) {
+                header("Location: index.php?error=user name is required");
+                exit();
+            } elseif (empty($pword)) {
+                header("Location: index.php?error=password is required");
+                exit();
+            } else {
+                $sql = "SELECT * FROM users WHERE user_name='$uname' AND password='$pword'";
+                $result = mysqli_query($conn, $sql);
+
+                if (mysqli_num_rows($result)) {
+                }
+            }
+        } else {
+            header("Location: index.php");
+            exit();
+        }
+
+        ?> -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -154,6 +188,7 @@ if (isset($_POST['uname']) && isset($_POST['pword'])) {
                 $username = "root";
                 $password = "";
                 $database = "test_closure_import";
+                // $_SESSION['username'];
 
                 //Create Connection
                 $conn = new mysqli($servername, $username, $password, $database);
@@ -163,15 +198,19 @@ if (isset($_POST['uname']) && isset($_POST['pword'])) {
                     die("Connection Failed: " . $conn->connect_error);
                 }
                 //read all rows from database table
-                $sql = "SELECT * FROM `c_close_csv` WHERE ORG_ID = '7986'";
+                // $sql = "SELECT * FROM `c_close_csv`"; // displays all from db
+                $sql = "SELECT * FROM `c_close_csv` WHERE ORG_ID = '7986'"; // <- WORKING DISPLAYING ONE ROW OF DESIRED ID
                 $result = $conn->query($sql);
+
+
+
 
                 //read data of each row
                 while ($row = $result->fetch_assoc()) {
                     echo "
                     
                     <td>" . $row["ORG_ID"] . "</td>
-                    <td>" . $row["PASSWORD"] . "</td>
+                    <td>" . $row["PWORD"] . "</td>
                     <td>" . $row["CATEGORY"] . "</td>
                     <td>" . $row['ORG'] . "</td>
                     <td>" . $row['STATUS'] . "</td>
