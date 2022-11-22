@@ -1,6 +1,6 @@
 <?php
-// session_start();
-// include "db_conn.php";
+session_start();
+include "db_conn.php";
 // if (isset($_POST['ORG_ID']) && isset($_POST['PWORD'])) {
 //     function validate($data)
 //     {
@@ -29,6 +29,8 @@
 //     header("Location: index.php");
 //     exit();
 // }
+//TRY2
+
 ?>
 
 <!--THIS IS THE CURRENTLY WORKING VERSIONn-->
@@ -62,6 +64,39 @@
             header("Location: index.php");
             exit();
         }
+
+        // include "db_conn.php";
+        // if (isset($_POST['ORG_ID']) && isset($_POST['PWORD'])) {
+        //     function validate($data)
+        //     {
+        //         $data = trim($data);
+        //         $data = stripslashes($data);
+        //         $data = htmlspecialchars($data);
+        //         return $data;
+        //     }
+        //     $ORG_ID = validate($_POST['ORG_ID']);
+        //     $PWORD = validate($_POST['PWORD']);
+
+        //     if (empty($ORG_ID)) {
+        //         header("Location: index.php?error=user name is required");
+        //         exit();
+        //     } elseif (empty($PWORD)) {
+        //         header("Location: index.php?error=password is required");
+        //         exit();
+        //     } else {
+        //         $sql = "SELECT * FROM c_close_csv WHERE ORG_ID='$ORG_ID' AND PWORD = '$PWORD'";
+        //         $result = mysqli_query($conn, $sql);
+
+        //         if ($mysql_num_rows($result) === 1) {
+        //             $row = mysql_fetch_assoc($result);
+
+        //             print_r($row);
+        //         }
+        //     }
+        // } else {
+        //     header("Location: index.php?error");
+        //     exit();
+        // }
 
         ?> -->
 
@@ -99,39 +134,7 @@
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <script>
-    $(function() {
-        var dateFormat = "mm/dd/yy",
-            from = $("#from")
-            .datepicker({
-                defaultDate: "+1w",
-                changeMonth: true,
-                numberOfMonths: 3
-            })
-            .on("change", function() {
-                to.datepicker("option", "minDate", getDate(this));
-            }),
-            to = $("#to").datepicker({
-                defaultDate: "+1w",
-                changeMonth: true,
-                numberOfMonths: 3
-            })
-            .on("change", function() {
-                from.datepicker("option", "maxDate", getDate(this));
-            });
 
-        function getDate(element) {
-            var date;
-            try {
-                date = $.datepicker.parseDate(dateFormat, element.value);
-            } catch (error) {
-                date = null;
-            }
-
-            return date;
-        }
-    });
-    </script>
     <script>
     $(function() {
         $("#datepicker").datepicker();
@@ -144,7 +147,8 @@
     <!-- bg-primary -->
     <nav class="navbar navbar-expand-sm navbar-light " style="background-color: rgb(255, 154, 1);">
         <div class="container-fluid" style="background-color: rgb(255, 154, 1);">
-            <a class="navbar-brand" href="index.php"><img src="./koam-logo.png" alt="" width="200px"></a>
+            <a class="navbar-brand" href="index.php" style="margin-left: 40px"><img src="./koam-logo.png" alt=""
+                    width="200px"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarID"
                 aria-controls="navbarID" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon">
@@ -154,7 +158,8 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarID">
                 <div class="navbar-nav">
                     <a style="" class="nav-link nav-right" aria-current="page" href="index.php"> <img
-                            src="https://cdn-icons-png.flaticon.com/512/25/25694.png" style="width: 35px;">
+                            src="https://cdn-icons-png.flaticon.com/512/25/25694.png"
+                            style="width: 35px; margin-right: 40px;">
                     </a>
                 </div>
             </div>
@@ -199,11 +204,8 @@
                 }
                 //read all rows from database table
                 // $sql = "SELECT * FROM `c_close_csv`"; // displays all from db
-                $sql = "SELECT * FROM `c_close_csv` WHERE ORG_ID = '7986'"; // <- WORKING DISPLAYING ONE ROW OF DESIRED ID
+                $sql = "SELECT * FROM `c_close_csv` WHERE ORG_ID = '$uname'"; // <- WORKING DISPLAYING ONE ROW OF DESIRED ID
                 $result = $conn->query($sql);
-
-
-
 
                 //read data of each row
                 while ($row = $result->fetch_assoc()) {
@@ -219,10 +221,6 @@
                     <td>" . $row['END_TIME'] . "</td>
                 </tr>";
                 }
-
-
-
-
                 ?>
 
             </tbody>
@@ -242,53 +240,29 @@
         ?>
         <!-- Select Basic -->
         <div class="form-group">
-            <label class="col-md-3 control-label" for="selectbasic"><strong>Change Status To: </strong></label>
-            <div class="col-md-9">
-                <select id="selectbasic" name="selectbasic" class="input">
+            <label class="col-md-3 control-label" for="selectbasic"><strong>Change Status To:
+                </strong></label>
+            <div class=" col-md-9">
+                <select id="selectbasic" name="selectbasic" class="input" style="padding: 10px;">
                     <?php while ($row1 = mysqli_fetch_array($result)) :; ?>
                     <option><?php echo $row1[1]; ?></option>
                     <?php endwhile ?>
-                    <option value="1">Option one</option>
-                    <option value="2">Option two</option>
-                    <option value="3">Option three</option>
+
                 </select>
             </div>
         </div>
-
-        <!-- Text input-->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="textinput"><strong>Status: </strong></label>
-            <div class="col-md-3">
-                <input id="textinput" name="textinput" type="text" placeholder="" class="input">
-            </div>
-        </div>
-        <!--END DATE-->
-        <!-- <div class="form-group">
-            <label class="col-md-3 control-label" for="textinput"><strong>Start Date: </strong></label>  
-            <div class="col-md-3">
-              <input id="datepicker" name="textinput" type="text" placeholder="placeholder" class="form-control input-md">
-            </div>     
-      </div>
-      <div class="form-group">
-        <label class="col-md-3 control-label" for="textinput"><strong>End Date: </strong></label>  
-        <div class="col-md-3">
-          <input id="datepicker1" name="textinput" type="text" placeholder="placeholder" class="form-control input-md">
-        </div>     
-  </div> -->
-
-
 
 
         <div class="form-group">
             <label class="" for="from"><strong>Start Date: </strong></label>
             <div>
-                <input class="input" type="text" id="from" name="from">
+                <input class="input" type="datetime-local" id="from" name="from" style="padding: 10px;">
             </div>
         </div>
         <div class="form-group">
             <label class="" for="to"><strong>End Date: </strong></label>
             <div>
-                <input class="input" type="text" id="to" name="from">
+                <input class="input" type="datetime-local" id="to" name="from" style="padding: 10px;">
             </div>
         </div>
 
